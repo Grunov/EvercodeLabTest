@@ -1,5 +1,9 @@
 # frontend
 
+## Перед установкой
+
+переименновать .env.example в .env
+
 ## Project setup
 ```
 npm install
