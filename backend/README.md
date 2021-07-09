@@ -6,7 +6,7 @@
 npm install
 ```
 
-## Запуск
+## В рамках тестового задания запустить в development mode
 
 Переименновать .env.example в .env
 
