@@ -20,6 +20,10 @@
             ) Field is required
 
             .invalid-feedback(
+                v-if="$v.name.$dirty && !$v.name.matches"
+            ) Can only contain letters a-Z and numbers
+
+            .invalid-feedback(
                 v-if="$v.name.$dirty && !$v.name.maxLength"
             ) No longer than {{$v.name.$params.maxLength.max}} characters
            
@@ -37,6 +41,10 @@
             ) Field is required
 
             .invalid-feedback(
+                v-if="$v.ticker.$dirty && !$v.ticker.matches"
+            ) Can only contain letters a-Z and numbers
+
+            .invalid-feedback(
                 v-if="$v.ticker.$dirty && !$v.ticker.minLength"
             ) No shorter than {{$v.ticker.$params.minLength.min}} characters
     
@@ -48,12 +56,14 @@
 </template>
 
 <script>
-import { required, minLength, maxLength } from 'vuelidate/lib/validators';
+import { required, minLength, maxLength, helpers } from 'vuelidate/lib/validators';
 import {mapActions, mapGetters } from 'vuex';
 import {
     GET_ERRORS,
     CREATE_CURRENCY_API
 } from '@/store/constants'
+
+const matches = helpers.regex('matches', /^[A-Za-z0-9]*$/);
 
 export default {
     name: 'create-form',
@@ -65,12 +75,14 @@ export default {
     validations: {
         name: {
             required,
-            maxLength: maxLength(20)
+            maxLength: maxLength(20),
+            matches
         },
         ticker: {
             required,
             minLength: minLength(3),
-            maxLength: maxLength(5)
+            maxLength: maxLength(5),
+            matches
         }
     },
     computed: {
@@ -83,11 +95,13 @@ export default {
                 'is-invalid': 
                     this.$v.name.$dirty && 
                     (!this.$v.name.required || 
-                    !this.$v.name.maxLength),
+                    !this.$v.name.maxLength ||
+                    !this.$v.name.matches),
                 'is-valid': 
                     this.$v.name.$dirty && 
-                    (this.$v.name.required 
-                    && this.$v.name.maxLength)
+                    (this.$v.name.required && 
+                    this.$v.name.maxLength &&
+                    this.$v.name.matches)
 
             }
         },
@@ -98,12 +112,14 @@ export default {
                     this.$v.ticker.$dirty && 
                     (!this.$v.ticker.required || 
                     !this.$v.ticker.minLength ||
-                    !this.$v.ticker.maxLength),
+                    !this.$v.ticker.maxLength||
+                    !this.$v.ticker.matches),
                 'is-valid': 
                     this.$v.ticker.$dirty &&
                     (this.$v.ticker.required &&
                     this.$v.ticker.minLength &&
-                    this.$v.ticker.maxLength)
+                    this.$v.ticker.maxLength &&
+                    this.$v.ticker.matches)
             };
         }
     },
