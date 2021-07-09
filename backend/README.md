@@ -6,14 +6,11 @@
 npm install
 ```
 
-## Запуск в development mode
+## Запуск
+
+Переименновать .env.example в .env
 
 ```
 npm run dev
 ```
 
-## Запуск в production mode
-
-```
-npm run start
-```
