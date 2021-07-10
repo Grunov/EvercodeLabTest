@@ -5,6 +5,6 @@ const currencyRouter = require('./currency.router')
 const authMiddleware = require('../middlewares/auth.middlware');
 
 router.use('/auth', authRouter);
-router.use('/currency', currencyRouter);
+router.use('/currency', authMiddleware, currencyRouter);
 
 module.exports = router;
